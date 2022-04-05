@@ -5,7 +5,7 @@ namespace WarehouseAPI.Controllers
     [Route("api/order")]
     public class OrderController : ControllerBase
     {
-        [HttpPut]
+        [HttpPost]
         public ActionResult CreateNewOrder()
         {
             // todo
