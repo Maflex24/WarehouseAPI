@@ -12,8 +12,8 @@ using WarehouseAPI.Entities;
 namespace WarehouseAPI.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    [Migration("20220405195310_CreatingDatabaseAndTables4")]
-    partial class CreatingDatabaseAndTables4
+    [Migration("20220405200512_CreatingDatabaseAndTables")]
+    partial class CreatingDatabaseAndTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
