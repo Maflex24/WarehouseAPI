@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<Folder Include="Middleware\" />
+		<Folder Include="Utils\" />
 		<Folder Include="Services\" />
 		<Folder Include="Validators\" />
 	</ItemGroup>
