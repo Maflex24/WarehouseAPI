@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
 using WarehouseAPI.Entities;
+using WarehouseAPI.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<WarehouseDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("WarehouseDbConnection")));
 
+builder.Services.AddScoped<GenerateProducts>();
 builder.Services.AddScoped<DataSeeder>();
 
 var app = builder.Build();
