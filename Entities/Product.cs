@@ -1,8 +1,10 @@
-﻿namespace WarehouseAPI.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WarehouseAPI.Entities
 {
     public class Product
     {
-        public Guid Id { get; set; }
+        [Key]
         public string Code { get; set; }
         public string Name { get; set; }
         public string Size { get; set; }
