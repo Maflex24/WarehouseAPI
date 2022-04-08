@@ -16,9 +16,9 @@ namespace WarehouseAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<ProductModelDto>> GetAll([FromQuery] int resultsAmount, [FromQuery] bool isWarehouseQuery)
+        public ActionResult<List<ProductModelDto>> GetAll([FromQuery] int resultsAmount, [FromQuery] bool isWarehouseQuery, [FromBody] ProductSearchModel searchModel)
         {
-            var products = _productService.GetProducts(resultsAmount, isWarehouseQuery);
+            var products = _productService.GetProducts(resultsAmount, isWarehouseQuery, searchModel);
 
             if (products == null)
                 return NotFound();
