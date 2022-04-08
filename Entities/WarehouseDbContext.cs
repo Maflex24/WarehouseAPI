@@ -9,7 +9,9 @@ namespace WarehouseAPI.Entities
         {
 
         }
-
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Sex> Sexes { get; set; }
+        public DbSet<Size> Sizes { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Employee> Employees { get; set; }

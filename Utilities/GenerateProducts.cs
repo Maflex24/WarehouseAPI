@@ -1,4 +1,5 @@
-﻿using WarehouseAPI.Entities;
+﻿using System.Text;
+using WarehouseAPI.Entities;
 
 namespace WarehouseAPI.Utilities
 {
@@ -16,8 +17,8 @@ namespace WarehouseAPI.Utilities
             _dbContext = dbContext;
         }
 
-        private List<string> sizesList = new List<string>() { "xs", "s", "m", "l", "xl", "xxl", "xxxl" };
-        private List<string> colorsList = new List<string>() { "black", "dark black", "light black", "grey", "brown", "green", "dark green", "purple", "pink", "white" };
+        //private List<string> sizesList = new List<string>() { "xs", "s", "m", "l", "xl", "xxl", "xxxl" };
+        //private List<string> colorsList = new List<string>() { "black", "dark black", "light black", "grey", "brown", "green", "dark green", "purple", "pink", "white" };
 
         public List<Product> GenerateProductsWithAllSizeAndColors(string name, string category, string sex)
         {
@@ -29,6 +30,28 @@ namespace WarehouseAPI.Utilities
                 .Select(c => c.Id)
                 .FirstOrDefault();
 
+            var colors = _dbContext
+                .Colors
+                .ToList();
+
+            var sizes = _dbContext
+                .Sizes
+                .ToList();
+
+            var sexes = _dbContext
+                .Sexes
+                .ToList();
+
+            var colorsList = _dbContext
+                .Colors
+                .Select(c => c.Name)
+                .ToList();
+
+            var sizesList = _dbContext
+                .Sizes
+                .Select(s => s.Name)
+                .ToList();
+
             foreach (var color in colorsList)
             {
                 foreach (var size in sizesList)
@@ -37,15 +60,38 @@ namespace WarehouseAPI.Utilities
                     {
                         Name = name,
                         CategoryId = categoryId,
-                        Color = color,
-                        Sex = sex,
-                        Size = size,
-                        Code = $"{category.Substring(0, 2)}{name.Substring(0, 2)}{size}{color.Substring(0, 4)}{generateRandomStringNumber(6)}".ToUpper()
+                        ColorId = colors
+                            .Where(c => c.Name == color)
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+                        SexId = sexes
+                            .Where(c => c.Name == sex)
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+                        SizeId = sizes
+                            .Where(c => c.Name == size)
+                            .Select(c => c.Id)
+                            .FirstOrDefault(),
+
+                        Code = GenerateProductCode(category, name, size, color)
                     });
                 }
             }
 
             return products;
+        }
+
+        private string GenerateProductCode(string category, string name, string size, string color)
+        {
+            StringBuilder codeBuilder = new StringBuilder();
+
+            codeBuilder.Append(category.PadRight(6).Replace(" ", "").Replace("-", "") + "-");
+            codeBuilder.Append(name.PadRight(6).Replace(" ", "").Replace("-", "") + "-");
+            codeBuilder.Append(size + "-");
+            codeBuilder.Append(color.PadRight(6).Replace(" ", "") + "-");
+            codeBuilder.Append(generateRandomStringNumber(4));
+
+            return codeBuilder.ToString().ToUpper();
         }
 
         private string generateRandomStringNumber(int howManycharQty)

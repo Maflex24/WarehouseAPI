@@ -19,11 +19,46 @@ namespace WarehouseAPI.Entities
         {
             if (_dbContext.Database.CanConnect())
             {
-                Console.WriteLine("Data seeder method");
                 if (!_dbContext.Categories.Any())
                 {
                     var categories = GetCategories();
                     _dbContext.Categories.AddRange(categories);
+                    _dbContext.SaveChanges();
+                }
+
+                if (!_dbContext.Colors.Any())
+                {
+                    var colors = GetColors();
+                    _dbContext.Colors.AddRange(colors);
+                    _dbContext.SaveChanges();
+                }
+
+                if (!_dbContext.Sexes.Any())
+                {
+                    var sexes = new List<Sex>()
+                    {
+                        new Sex() {Name = "woman"},
+                        new Sex() {Name = "men"},
+                        new Sex() {Name = "unisex"}
+                    };
+                    _dbContext.Sexes.AddRange(sexes);
+                    _dbContext.SaveChanges();
+                }
+
+                if (!_dbContext.Sizes.Any())
+                {
+                    var sizes = new List<Size>()
+                    {
+                        new Size() {Name = "xxs"},
+                        new Size() {Name = "xs"},
+                        new Size() {Name = "s"},
+                        new Size() {Name = "m"},
+                        new Size() {Name = "l"},
+                        new Size() {Name = "xl"},
+                        new Size() {Name = "xxl"},
+                        new Size() {Name = "xxxl"}
+                    };
+                    _dbContext.Sizes.AddRange(sizes);
                     _dbContext.SaveChanges();
                 }
 
@@ -34,6 +69,27 @@ namespace WarehouseAPI.Entities
                     _dbContext.SaveChanges();
                 }
             }
+        }
+
+        private List<Color> GetColors()
+        {
+            List<string> colors = new List<string>()
+            {
+                "pink", "red", "orange", "beige", "yellow", "green", "light blue", "dark blue", "purple", "brown",
+                "grey", "black", "white"
+            };
+            List<Color> colorsList = new List<Color>();
+
+            foreach (var color in colors)
+            {
+                colorsList.Add(
+                    new Color()
+                    {
+                        Name = color
+                    });
+            }
+
+            return colorsList;
         }
 
         private IEnumerable<Product> GetProducts()
@@ -47,6 +103,8 @@ namespace WarehouseAPI.Entities
                 new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Harley jacket", "jackets", "woman")),
                 new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Old style jeans", "jeans", "men")),
                 new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Old style jeans", "jeans", "woman")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Mini-cute", "skirts", "woman")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Bike leather", "jackets", "unisex")),
             };
 
 
