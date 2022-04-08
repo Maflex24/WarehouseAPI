@@ -1,20 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WarehouseAPI.Utilities;
+
 
 namespace WarehouseAPI.Entities
 {
     public class DataSeeder
     {
         private readonly WarehouseDbContext _dbContext;
+        private readonly GenerateProducts _generateProducts;
 
-        public DataSeeder(WarehouseDbContext dbContext)
+        public DataSeeder(WarehouseDbContext dbContext, GenerateProducts generateProducts)
         {
             _dbContext = dbContext;
+            _generateProducts = generateProducts;
         }
 
         public void Seed()
         {
             if (_dbContext.Database.CanConnect())
             {
+                Console.WriteLine("Data seeder method");
                 if (!_dbContext.Categories.Any())
                 {
                     var categories = GetCategories();
@@ -33,35 +38,25 @@ namespace WarehouseAPI.Entities
 
         private IEnumerable<Product> GetProducts()
         {
-            var products = new List<Product>()
+            List<List<Product>> productsList = new List<List<Product>>()
             {
-                new Product()
-                {
-                    Name = "Smart-Top",
-                    CategoryId = _dbContext
-                        .Categories
-                        .Where(c => c.Name == "tops")
-                        .Select(p => p.Id)
-                        .FirstOrDefault(),
-                    Color = "red",
-                    Sex = "woman",
-                    Size = "xs",
-                    Code = "112233"
-                },
-                new Product()
-                {
-                    Name = "Snow Cover",
-                    CategoryId = _dbContext
-                        .Categories
-                        .Where(c => c.Name == "coats")
-                        .Select(p => p.Id)
-                        .FirstOrDefault(),
-                    Color = "black",
-                    Sex = "men",
-                    Size = "xl",
-                    Code = "1133556"
-                },
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Shika top", "tops", "woman")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Vonga dress", "dresses", "woman")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Viking coat", "coats", "men")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Harley jacket", "jackets", "men")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Harley jacket", "jackets", "woman")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Old style jeans", "jeans", "men")),
+                new List<Product>(_generateProducts.GenerateProductsWithAllSizeAndColors("Old style jeans", "jeans", "woman")),
             };
+
+
+            List<Product> products = new List<Product>();
+            foreach (var list in productsList)
+            {
+                foreach (var t in list)
+                    products.Add(t);
+            }
+
 
             return products;
         }
