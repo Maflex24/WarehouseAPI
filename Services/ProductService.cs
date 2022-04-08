@@ -6,7 +6,7 @@ namespace WarehouseAPI.Services
 {
     public interface IProductService
     {
-        public List<ProductModelDto> GetProducts(int resultsAmount, bool isWarehouseQuery);
+        public List<ProductModelDto> GetProducts(int resultsAmount, bool isWarehouseQuery, ProductSearchModel searchModel);
     }
 
     public class ProductService : IProductService
@@ -19,17 +19,26 @@ namespace WarehouseAPI.Services
         }
 
 
-        public List<ProductModelDto> GetProducts(int resultsAmount, bool isWarehouseQuery)
+        public List<ProductModelDto> GetProducts(int resultsAmount, bool isWarehouseQuery, ProductSearchModel searchModel)
         {
             if (resultsAmount < 1)
                 resultsAmount = 1;
 
-            var products = _dbContext
+            var baseProducts = _dbContext
                 .Products
+                .Where(p => searchModel.Code == null || p.Code.ToUpper().Contains(searchModel.Code.ToUpper()))
+                .Where(p => searchModel.Name == null || p.Name.ToLower().Contains(searchModel.Name.ToLower()))
                 .Include(p => p.Sex)
                 .Include(p => p.Color)
                 .Include(p => p.Size)
                 .Include(p => p.Category)
+                .Where(p => searchModel.Size == null || p.Size.Name.ToLower().Contains(searchModel.Size.ToLower()))
+                .Where(p => searchModel.Sex == null || p.Sex.Name.ToLower().Contains(searchModel.Sex.ToLower()))
+                .Where(p => searchModel.Color == null || p.Color.Name.ToLower().Contains(searchModel.Color.ToLower()))
+                .Where(p => searchModel.Category == null || p.Category.Name.ToLower().Contains(searchModel.Category.ToLower()));
+
+
+            var products = baseProducts
                 .Take(resultsAmount)
                 .ToList();
 
