@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using WarehouseAPI.Entities;
+using WarehouseAPI.Exceptions;
 using WarehouseAPI.Models;
 
 namespace WarehouseAPI.Services
@@ -31,7 +32,7 @@ namespace WarehouseAPI.Services
                 .Any(c => c.Email == clientModel.Email);
 
             if (isMailInDatabase)
-                throw new Exception("This user already exist");
+                throw new AlreadyExistException("This user already exist");
 
             var address = new Address()
             {
@@ -70,7 +71,7 @@ namespace WarehouseAPI.Services
             if (_dbContext.Employees.Any(e => e.Login == employeeModel.Login
                                               || _dbContext.Employees.Any(e =>
                                                   e.BadgeNumber == employeeModel.BadgeNumber)))
-                throw new Exception("Employee with this login or badge number already exist");
+                throw new AlreadyExistException("Employee with this login or badge number already exist");
 
 
             var employee = new Employee()
