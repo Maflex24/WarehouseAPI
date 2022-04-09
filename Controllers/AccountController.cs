@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WarehouseAPI.Models;
 using WarehouseAPI.Services;
 
 namespace WarehouseAPI.Controllers
@@ -13,10 +14,16 @@ namespace WarehouseAPI.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("register")]
-        public ActionResult Register()
+        [HttpPost("register/client")]
+        public ActionResult RegisterClient([FromBody] RegisterClientModelDto clientModel)
         {
-            _accountService.Test();
+            _accountService.RegisterClient(clientModel);
+            return Ok();
+        }
+
+        [HttpPost("register/employee")]
+        public ActionResult RegisterEmployee()
+        {
             return Ok();
         }
 

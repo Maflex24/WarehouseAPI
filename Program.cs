@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
 using WarehouseAPI.Entities;
+using WarehouseAPI.Models;
 using WarehouseAPI.Services;
 using WarehouseAPI.Utilities;
 
@@ -21,6 +23,8 @@ builder.Services.AddScoped<DataSeeder>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddScoped<IPasswordHasher<Client>, PasswordHasher<Client>>();
 
 var app = builder.Build();
 
