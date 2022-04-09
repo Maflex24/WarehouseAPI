@@ -40,6 +40,7 @@ namespace WarehouseAPI.Services
 
             var products = baseProducts
                 .Take(resultsAmount)
+                .OrderBy(p => p.Name)
                 .ToList();
 
             var clientDtos = new List<ProductModelDto>();
