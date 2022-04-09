@@ -20,6 +20,7 @@ builder.Services.AddScoped<GenerateProducts>();
 builder.Services.AddScoped<DataSeeder>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
