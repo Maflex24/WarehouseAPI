@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WarehouseAPI.Entities;
 
 namespace WarehouseAPI.Models
 {
@@ -14,5 +15,7 @@ namespace WarehouseAPI.Models
         public string PasswordHash { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public int AddressId { get; set; }
+        public virtual Address Address { get; set; }
     }
 }
