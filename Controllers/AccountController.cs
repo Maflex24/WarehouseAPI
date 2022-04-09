@@ -22,8 +22,9 @@ namespace WarehouseAPI.Controllers
         }
 
         [HttpPost("register/employee")]
-        public ActionResult RegisterEmployee()
+        public ActionResult RegisterEmployee([FromBody] RegisterEmployeeModelDto employeeModel)
         {
+            _accountService.RegisterEmployee(employeeModel);
             return Ok();
         }
 

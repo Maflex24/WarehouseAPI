@@ -12,8 +12,8 @@ using WarehouseAPI.Entities;
 namespace WarehouseAPI.Migrations
 {
     [DbContext(typeof(WarehouseDbContext))]
-    [Migration("20220408174846_AddedColorSizeSexTablesWithIdFix")]
-    partial class AddedColorSizeSexTablesWithIdFix
+    [Migration("20220409135512_AddedPhoneNumberToEmployee")]
+    partial class AddedPhoneNumberToEmployee
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -214,6 +214,9 @@ namespace WarehouseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -232,6 +235,8 @@ namespace WarehouseAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Clients");
                 });
@@ -260,6 +265,9 @@ namespace WarehouseAPI.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -331,6 +339,17 @@ namespace WarehouseAPI.Migrations
                     b.Navigation("Sex");
 
                     b.Navigation("Size");
+                });
+
+            modelBuilder.Entity("WarehouseAPI.Models.Client", b =>
+                {
+                    b.HasOne("WarehouseAPI.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("WarehouseAPI.Models.Order", b =>

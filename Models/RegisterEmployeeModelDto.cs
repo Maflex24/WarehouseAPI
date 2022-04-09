@@ -8,7 +8,7 @@ namespace WarehouseAPI.Models
         public string Login { get; set; }
         [Required]
         [MinLength(6)]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
         public string BadgeNumber { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
