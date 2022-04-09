@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
 using WarehouseAPI.Entities;
+using WarehouseAPI.ExceptionsAndMiddleware;
 using WarehouseAPI.Models;
 using WarehouseAPI.Services;
 using WarehouseAPI.Utilities;
@@ -27,6 +28,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPasswordHasher<Client>, PasswordHasher<Client>>();
 builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
 
+builder.Services.AddScoped<ExceptionHandlerMiddleware>();
+
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
@@ -39,6 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
