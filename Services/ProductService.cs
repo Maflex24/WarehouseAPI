@@ -32,7 +32,7 @@ namespace WarehouseAPI.Services
                 .Include(p => p.Color)
                 .Include(p => p.Size)
                 .Include(p => p.Category)
-                .Where(p => searchModel.Size == null || p.Size.Name.ToLower().Contains(searchModel.Size.ToLower()))
+                .Where(p => searchModel.Size == null || p.Size.Name.ToLower() == searchModel.Size.ToLower())
                 .Where(p => searchModel.Sex == null || p.Sex.Name.ToLower().Contains(searchModel.Sex.ToLower()))
                 .Where(p => searchModel.Color == null || p.Color.Name.ToLower().Contains(searchModel.Color.ToLower()))
                 .Where(p => searchModel.Category == null || p.Category.Name.ToLower().Contains(searchModel.Category.ToLower()));
